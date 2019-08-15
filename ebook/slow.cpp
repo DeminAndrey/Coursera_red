@@ -57,9 +57,9 @@ public:
 //
 //      cout << endl;
 //
-//    while (position > 0 && page_count > user_page_counts_[sorted_users_[position - 1]]) {
-//      SwapUsers(position, position - 1);
-//    }
+    while (position > 0 && page_count > user_page_counts_[sorted_users_[position - 1]]) {
+      SwapUsers(position, position - 1);
+    }
 //
 //      cout << "AFTER SORTING" << endl;
 //
@@ -112,7 +112,7 @@ public:
       ++position;
     }
     if (position == user_count) {
-        cout << "ok" << endl;
+//        cout << "ok" << endl;
         return 0;
     }
     // По умолчанию деление целочисленное, поэтому
@@ -157,10 +157,10 @@ public:
 //      cout << "position: " << position << endl;
 //      cout << "user_count - 1: " << user_count - 1 << endl;
 
-    for (auto i = 0; i < sorted_users_.size(); ++i) {
-        cout << i << " " << sorted_users_[i] << endl;
-    }
-    cout << endl;
+//    for (auto i = 0; i < sorted_users_.size(); ++i) {
+//        cout << i << " " << sorted_users_[i] << endl;
+//    }
+//    cout << endl;
 
     return (user_count - position) * 1.0 / (user_count - 1);
   }
@@ -222,8 +222,8 @@ void TestRead() {
 
 int main() {
 
-    TestRunner tr;
-    TestRead();
+//    TestRunner tr;
+//    TestRead();
   // Для ускорения чтения данных отключается синхронизация
   // cin и cout с stdio,
   // а также выполняется отвязка cin от cout
