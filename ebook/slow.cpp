@@ -1,10 +1,7 @@
-#include "test_runner.h"
-
 #include <iomanip>
 #include <iostream>
 #include <vector>
 #include <utility>
-#include <random>
 
 using namespace std;
 
@@ -15,81 +12,17 @@ public:
         sorted_users_(),
         user_positions_(MAX_USER_COUNT_ + 1, -1) {}
 
-  void Read(int user_id, int page_count) { // 1
+  void Read(int user_id, int page_count) {
     if (user_page_counts_[user_id] == 0) {
       AddUser(user_id);
     }
     user_page_counts_[user_id] = page_count;
 
-//    cout << "user page count: " << user_page_counts_[user_id] << endl;
-
     int& position = user_positions_[user_id];
 
-//    cout << "position: " << position << endl;
-
-//      cout << endl;
-
-
-//      cout << "USER PAGE COUNTS" << endl;
-//      for (int i = 0; i < user_page_counts_.size(); ++i) {
-//          if (user_page_counts_[i] != 0) {
-//              cout << i << " " << user_page_counts_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
-//
-//      cout << "SORTED USERS" << endl;
-//      for (int i = 0; i < sorted_users_.size(); ++i) {
-//          if (sorted_users_[i] != 0) {
-//              cout << i << " " << sorted_users_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
-//
-//      cout << "USER POSITIONS" << endl;
-//      for (int i = 0; i < user_positions_.size(); ++i) {
-//          if (user_positions_[i] != -1) {
-//              cout << i << " " << user_positions_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
-//
     while (position > 0 && page_count > user_page_counts_[sorted_users_[position - 1]]) {
       SwapUsers(position, position - 1);
     }
-//
-//      cout << "AFTER SORTING" << endl;
-//
-//
-//      cout << "USER PAGE COUNTS" << endl;
-//      for (int i = 0; i < user_page_counts_.size(); ++i) {
-//          if (user_page_counts_[i] != 0) {
-//              cout << i << " " << user_page_counts_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
-//
-//      cout << "SORTED USERS" << endl;
-//      for (int i = 0; i < sorted_users_.size(); ++i) {
-//          if (sorted_users_[i] != 0) {
-//              cout << i << " " << sorted_users_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
-//
-//      cout << "USER POSITIONS" << endl;
-//      for (int i = 0; i < user_positions_.size(); ++i) {
-//          if (user_positions_[i] != -1) {
-//              cout << i << " " << user_positions_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
   }
 
   double Cheer(int user_id) const {
@@ -112,55 +45,11 @@ public:
       ++position;
     }
     if (position == user_count) {
-//        cout << "ok" << endl;
         return 0;
     }
     // По умолчанию деление целочисленное, поэтому
     // нужно привести числитель к типу double.
     // Простой способ сделать это — умножить его на 1.0.
-
-//    cout << "user id: " << user_id << endl;
-//    cout << "user count: " << user_count << endl;
-//    cout << "page count: " << page_count << endl;
-//
-//    cout << endl;
-//
-//
-//    cout << "USER PAGE COUNTS" << endl;
-//    for (int i = 0; i < user_page_counts_.size(); ++i) {
-//        if (user_page_counts_[i] != 0) {
-//            cout << i << " " << user_page_counts_[i] << '\n';
-//        }
-//    }
-//
-//    cout << endl;
-//
-//    cout << "SORTED USERS" << endl;
-//    for (int i = 0; i < sorted_users_.size(); ++i) {
-//        if (sorted_users_[i] != 0) {
-//            cout << i << " " << sorted_users_[i] << '\n';
-//        }
-//    }
-//
-//    cout << endl;
-//
-//      cout << "USER POSITIONS" << endl;
-//      for (int i = 0; i < user_positions_.size(); ++i) {
-//          if (user_positions_[i] != -1) {
-//              cout << i << " " << user_positions_[i] << '\n';
-//          }
-//      }
-//
-//      cout << endl;
-//
-//      cout << "user_count: " << user_count << endl;
-//      cout << "position: " << position << endl;
-//      cout << "user_count - 1: " << user_count - 1 << endl;
-
-//    for (auto i = 0; i < sorted_users_.size(); ++i) {
-//        cout << i << " " << sorted_users_[i] << endl;
-//    }
-//    cout << endl;
 
     return (user_count - position) * 1.0 / (user_count - 1);
   }
@@ -193,37 +82,7 @@ private:
 };
 
 
-// Тесты
-
-void TestRead() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    ReadingManager manager;
-
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> users(1, 100000);
-    std::uniform_real_distribution<double> pages(1, 1000);
-
-    int user = static_cast<int>(users(mt));
-//    int page = static_cast<int>(pages(mt));
-
-    for (int i = 1; i <= 11; ++i) {
-        int page = static_cast<int>(pages(mt));
-        manager.Read(i, page);
-    }
-
-    for (int i = 1; i < 11; ++i) {
-        cout << manager.Cheer(i) << endl;
-    }
-}
-
-
 int main() {
-
-//    TestRunner tr;
-//    TestRead();
   // Для ускорения чтения данных отключается синхронизация
   // cin и cout с stdio,
   // а также выполняется отвязка cin от cout
