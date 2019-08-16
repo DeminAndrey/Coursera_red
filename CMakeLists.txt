@@ -3,4 +3,4 @@ project(Red_belt)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Red_belt hotel_booking/main.cpp)
+add_executable(Red_belt object_pull/object_pull.cpp)
