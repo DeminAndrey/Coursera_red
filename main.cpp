@@ -15,7 +15,7 @@ public:
     }
 
     T& operator[] (size_t index) {
-        return *(data + index);
+        return data[index];
     }
 
 private:
