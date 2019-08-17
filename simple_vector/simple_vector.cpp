@@ -30,7 +30,6 @@ void TestPushBack() {
         ASSERT(v.Size() <= v.Capacity());
     }
     sort(begin(v), end(v));
-
     const vector<int> expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     ASSERT_EQUAL(v.Size(), expected.size());
     ASSERT(equal(begin(v), end(v), begin(expected)));
