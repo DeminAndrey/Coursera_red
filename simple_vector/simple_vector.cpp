@@ -1,49 +1,44 @@
+#include "simple_vector.h"
+#include "test_runner.h"
+
+#include <algorithm>
 #include <iostream>
 #include <vector>
-
+#include <string>
 using namespace std;
 
-template <typename T>
-class SimpleVector {
-public:
-    explicit SimpleVector(size_t size) {
-        data = new T[size];
-        end_ = data + size;
+void TestConstruction() {
+    SimpleVector<int> empty;
+    ASSERT_EQUAL(empty.Size(), 0u);
+    ASSERT_EQUAL(empty.Capacity(), 0u);
+    ASSERT(empty.begin() == empty.end());
+
+    SimpleVector<string> five_strings(5);
+    ASSERT_EQUAL(five_strings.Size(), 5u);
+    ASSERT(five_strings.Size() <= five_strings.Capacity());
+    for (auto& item : five_strings) {
+        ASSERT(item.empty());
     }
+    five_strings[2] = "Hello";
+    ASSERT_EQUAL(five_strings[2], "Hello");
+}
 
-    ~SimpleVector() {
-        delete[] data;
+void TestPushBack() {
+    SimpleVector<int> v;
+    for (int i = 10; i >= 1; --i) {
+        v.PushBack(i);
+        ASSERT(v.Size() <= v.Capacity());
     }
+    sort(begin(v), end(v));
 
-    T& operator[] (size_t index) {
-        return data[index];
-    }
-
-    T* begin() {return data;}
-    T* end() {return end_;}
-
-    const T* begin() const {return data;}
-    const T* end() const {return end_;}
-
-private:
-    T* data;
-    T* end_;
-};
-
-template <typename T>
-void Print(const SimpleVector<T>& v) {
-    for (const auto x : v) {
-        cout << x << " ";
-    }
+    const vector<int> expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    ASSERT_EQUAL(v.Size(), expected.size());
+    ASSERT(equal(begin(v), end(v), begin(expected)));
 }
 
 int main() {
-    SimpleVector<int> sv(4);
-    sv[0] = 5;
-    sv[1] = 3;
-    sv[2] = 4;
-    sv[3] = 1;
-    sort(sv.begin(), sv.end());
-    Print(sv);
+    TestRunner tr;
+    RUN_TEST(tr, TestConstruction);
+    RUN_TEST(tr, TestPushBack);
     return 0;
 }
