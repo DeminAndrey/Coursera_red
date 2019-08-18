@@ -1,7 +1,6 @@
 #include "test_runner.h"
 
 #include <vector>
-#include <iostream>
 using namespace std;
 
 template <typename T>
@@ -12,70 +11,12 @@ public:
         Node* next = nullptr;
     };
 
-    LinkedList() :
-        head(nullptr) {}
+    ~LinkedList();
 
-    ~LinkedList() {
-        delete head;
-    }
-
-    void PushFront(const T& value) {
-        if (head != nullptr) {
-            Node* node = new Node;
-            node->value = value;
-            node->next = head;
-            head = node;
-        } else {
-            head = new Node;
-            head->value = value;
-        }
-    }
-    void InsertAfter(Node* node, const T& value) {
-        if (node == nullptr) {
-            PushFront(value);
-        }
-        Node* new_node = new Node;
-        new_node->value = value;
-        if (head == node) {
-            if (head->next != nullptr) {
-                new_node->next = head->next;
-                head->next = new_node;
-            }
-            head->next = new_node;
-        } else {
-            if (head->next != nullptr) {
-                while (head->next != node) {
-                    head++;
-                }
-                new_node->next = head;
-            }
-            head->next = new_node;
-        }
-
-    }
-    void RemoveAfter(Node* node) {
-        if (node == nullptr) {
-            PopFront();
-        } else {
-//            while (head != node) {
-//                head++;
-//            }
-            if (node->next != nullptr) {
-//                Node* new_node = node->next->next;
-                delete[] head;
-                cout << head->value << endl;
-                head + 1;
-                cout << node->value << endl;
-                cout << head->value << endl;
-//                head->next = new_node;
-//                delete head;
-            }
-
-        }
-    }
-    void PopFront() {
-        delete head;
-    }
+    void PushFront(const T& value);
+    void InsertAfter(Node* node, const T& value);
+    void RemoveAfter(Node* node);
+    void PopFront();
 
     Node* GetHead() { return head; }
     const Node* GetHead() const { return head; }
@@ -91,6 +32,67 @@ vector<T> ToVector(const LinkedList<T>& list) {
         result.push_back(node->value);
     }
     return result;
+}
+
+template <typename T>
+void LinkedList<T>::PushFront(const T& value) {
+    if (head != nullptr) {
+        Node* node = new Node;
+        node->value = value;
+        node->next = head;
+        head = node;
+    } else {
+        head = new Node;
+        head->value = value;
+    }
+}
+
+template <typename T>
+void LinkedList<T>::InsertAfter(LinkedList<T>::Node *node, const T &value) {
+    if (node == nullptr) {
+        PushFront(value);
+        return;
+    }
+    Node* new_node = new Node;
+    new_node->value = value;
+    Node* next_node = node->next;
+    node->next = new_node;
+    new_node->next = next_node;
+}
+
+template <typename T>
+void LinkedList<T>::RemoveAfter(LinkedList<T>::Node *node) {
+    if (node == nullptr) {
+        PopFront();
+        return;
+    }
+    if (node->next == nullptr) {
+        return;
+    }
+    Node *del = node->next;
+    Node *next_node = del->next;
+    node->next = nullptr;
+    node->next = next_node;
+    delete del;
+}
+
+template <typename T>
+void LinkedList<T>::PopFront() {
+    Node* new_head = head;
+    if (new_head != nullptr) {
+        head = new_head->next;
+        delete new_head;
+    }
+}
+
+template <typename T>
+LinkedList<T>::~LinkedList() {
+    while (head != nullptr) {
+        Node* ptr = head;
+        delete head;
+        head = nullptr;
+        head = ptr->next;
+    }
 }
 
 void TestPushFront() {
@@ -129,33 +131,25 @@ void TestRemoveAfter() {
     for (int i = 1; i <= 5; ++i) {
         list.PushFront(i);
     }
-    for (auto i : ToVector(list)) {
-        cout << i << " ";
-    }
-    cout << endl;
 
     const vector<int> expected = {5, 4, 3, 2, 1};
     ASSERT_EQUAL(ToVector(list), expected);
 
     auto next_to_head = list.GetHead()->next;
     list.RemoveAfter(next_to_head); // удаляем 3
-    for (auto i : ToVector(list)) {
-        cout << i << " ";
-    }
     list.RemoveAfter(next_to_head); // удаляем 2
 
     const vector<int> expected1 = {5, 4, 1};
     ASSERT_EQUAL(ToVector(list), expected1);
 
-//    while (list.GetHead()->next) {
-//        list.RemoveAfter(list.GetHead());
-//    }
-//    ASSERT_EQUAL(list.GetHead()->value, 5);
+    while (list.GetHead()->next) {
+        list.RemoveAfter(list.GetHead());
+    }
+    ASSERT_EQUAL(list.GetHead()->value, 5);
 }
 
 void TestPopFront() {
     LinkedList<int> list;
-
     for (int i = 1; i <= 5; ++i) {
         list.PushFront(i);
     }
