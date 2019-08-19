@@ -3,4 +3,4 @@ project(Red_belt)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Red_belt stack_vector/stack_vector.cpp)
+add_executable(Red_belt string_view/string_view.cpp)
