@@ -1,35 +1,25 @@
+#include "test.h"
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-template <typename T>
-class SimpleVector {
-public:
-    explicit SimpleVector(size_t size) {
-        data = new T[size];
-    }
 
-    ~SimpleVector() {
-        delete[] data;
-    }
 
-    T& operator[] (size_t index) {
-        return data[index];
+void NS2::hello_world() {
+    cout << "Hello, world!" << endl;
+}
+namespace NS2 {
+    void Test() {
+        cout << "Test" << endl;
     }
+}
 
-private:
-    T* data;
-};
+void Loyalty::Events::Start() {
+
+}
 
 int main() {
-    SimpleVector<int> sv(5);
-    for (int i = 0; i < 5; ++i) {
-        sv[i] = 5 - i;
-    }
-
-    for (int i = 0; i < 5; ++i) {
-        cout << sv[i] << " ";
-    }
+    NS2::hello_world();
+    NS2::Test();
     return 0;
 }
