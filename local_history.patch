@@ -1,0 +1,421 @@
+Index: AirportCounter/airport_counter.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AirportCounter/airport_counter.cpp	(date 1566524387347)
++++ AirportCounter/airport_counter.cpp	(date 1566524387347)
+@@ -17,7 +17,7 @@
+     } else if (index == 1) {
+         return to_string(index) + ":SVO";
+     } else if (index == 2) {
+-        return to_string(index) + ":DME";
++        return to_string(index) + ":DMA";
+     } else if (index == 3) {
+         return to_string(index) + ":ZIA";
+     }
+@@ -25,129 +25,111 @@
+ }
+ 
+ // TAirport should be enum with sequential items and last item TAirport::Last_
+-template <typename TAirport>
++template<typename TAirport>
+ class AirportCounter {
+ public:
+     // конструктор по умолчанию: список элементов пока пуст
+     AirportCounter() = default;
+ 
+     // конструктор от диапазона элементов типа TAirport
+-    template <typename TIterator>
++    template<typename TIterator>
+     AirportCounter(TIterator begin, TIterator end) :
+-    airport_count(),
+-    airport_list(static_cast<size_t>(TAirport::Last_)) {
+-        vector<TAirport> v(begin, end);  // SVO VKO ZIA SVO
++        airport_count()
++        /*airports()*/ {
++            vector<TAirport> v(begin, end);
+ 
+         for (size_t i = 0; i < static_cast<size_t>(TAirport::Last_); ++i) {
+-            airport_list[i] = make_pair(static_cast<TAirport>(i), 0);
++//            airports[i] = 0;
++            airport_count[i] = make_pair(v[i], 0);
+         }
+ 
+-//        sort(v.begin(), v.end(), [](TAirport lhs, TAirport rhs){
+-//            return static_cast<size_t>(lhs) < static_cast<size_t>(rhs);
+-//        });
+-//
+-//        auto last = unique(v.begin(), v.end(), [](TAirport lhs, TAirport rhs){
+-//            return static_cast<size_t>(lhs) == static_cast<size_t>(rhs);
+-//        });
+-//
+-//        v.erase(last, v.end());
+-
+-        for (size_t i = 0; i < v.size(); ++i) {
++//        for (auto i = 0; i < airports.size(); ++i) {
++//            cout << "prepare vector: " << i <<  " - " << airports[i] << endl;
++//        }
++//        cout << "\n";
++        for (size_t i = 0; i < static_cast<size_t>(TAirport::Last_); ++i) {
++//            airport_count[i] = make_pair(static_cast<TAirport>(i), count(begin, end, static_cast<TAirport>(i)));
+             size_t cnt = count(begin, end, v[i]);
+-            airport_list[static_cast<size_t>(v[i])] = make_pair(v[i], count(begin, end, v[i]));
+-//            uniq.insert(make_pair(v[i], cnt));
++            airport_count[i] = make_pair(v[i], cnt);
++//            airports[static_cast<size_t>(v[i])] = cnt;
++        }
+ 
+-            if (v[i] != v[i - 1]) {
+-//                airport_count[i] = *uniq.find(make_pair(v[i], cnt));
+-            }
+-
++    /*    for (auto i = 0; i < v.size(); ++i) {
++            cout << "vector: " << static_cast<size_t>(i) << " - " << static_cast<size_t>(v[i]) << endl;
++        }
++        cout << "\n";*/
++       /* for (auto i = 0; i < airports.size(); ++i) {
++            cout << "airports: " << i <<  " - " << airports[i] << endl;
+         }
++        cout << "\n";*/
++/*
++        for (auto i = 0; i < airport_count.size(); ++i) {
++            cout << "array[pair]: " << i <<  " - " << static_cast<size_t>(airport_count[i].first) << "\n";
++        }
++        cout << "\n";*/
++    }
+ 
+-//        for (auto i : airport_list) {
+-//            cout << "vector " << PrintEnum(static_cast<size_t>(i.first)) << " " << i.second << "\n";
+-//        }
+-//        cout << endl;
+-//
+-//        cout << "vector " << PrintEnum(static_cast<size_t>(airport_list[2].first)) << " " << airport_list[2].second << "\n";
+-//        cout << endl;
+ 
+-//        for (auto i : uniq) {
+-//            cout << "set: " << PrintEnum(static_cast<size_t>(i.first)) << " " << i.second << endl;
+-//        }
+-//        cout << endl;
+-//
+-//        for (auto i : v) {
+-//            cout << "input vector: " << PrintEnum(static_cast<size_t>(i)) << endl;
+-//        }
+-//        cout << endl;
+-//
+-//        for (auto i : airport_count) {
+-//            cout << "pair data: " << PrintEnum(static_cast<size_t>(i.first)) << " - " << i.second << endl;
+-//        }
+-//        cout << endl;
+-    }
+ 
+     // получить количество элементов, равных данному
+     size_t Get(TAirport airport) const {
+-//        return airport_count[static_cast<size_t>(airport)].second;
+-        return airport_list[static_cast<size_t>(airport)].second;
++        return airport_count[static_cast<size_t>(airport)].second;
++//        return airports[static_cast<size_t>(airport)];
+     }
+ 
+     // добавить данный элемент
+     void Insert(TAirport airport) {
+-//        airport_count[static_cast<size_t>(airport)].second++;
+-        airport_list[static_cast<size_t>(airport)].second++;
++        airport_count[static_cast<size_t>(airport)].second++;
++//        airports[static_cast<size_t>(airport)]++;
+     }
+ 
+     // удалить одно вхождение данного элемента
+     void EraseOne(TAirport airport) {
+-//        airport_count[static_cast<size_t>(airport)].second--;
+-        airport_list[static_cast<size_t>(airport)].second--;
++        airport_count[static_cast<size_t>(airport)].second--;
++//        airports[static_cast<size_t>(airport)]--;
+     }
+ 
+     // удалить все вхождения данного элемента
+     void EraseAll(TAirport airport) {
+-//        airport_count[static_cast<size_t>(airport)].second = 0;
+-        airport_list[static_cast<size_t>(airport)].second = 0;
++        airport_count[static_cast<size_t>(airport)].second = 0;
++//        airports[static_cast<size_t>(airport)] = 0;
+     }
+ 
+     using Item = pair<TAirport, size_t>;
+-//    using Items = array<pair<TAirport, size_t>, static_cast<size_t>(TAirport::Last_)>;
+-    using Items = vector<pair<TAirport, size_t>>;
++    using Items = array<pair<TAirport, size_t>, static_cast<size_t>(TAirport::Last_)>;
+ 
+     // получить некоторый объект, по которому можно проитерироваться,
+     // получив набор объектов типа Item - пар (аэропорт, количество),
+     // упорядоченных по аэропорту
+     Items GetItems() const {
+-        return airport_list;
++        return airport_count;
+     }
+ 
+ private:
+     array<pair<TAirport, size_t>, static_cast<size_t>(TAirport::Last_)> airport_count;
+-    vector<pair<TAirport, size_t>> airport_list;
+-//    set<pair<TAirport, size_t>> uniq;
++//    array<size_t, static_cast<size_t>(TAirport::Last_)> airports;
+ };
+ 
+ void TestMoscow() {
+     enum class MoscowAirport {
+-    VKO,
+-    SVO,
+-    DME,
+-    ZIA,
+-    Last_
++        VKO,
++        SVO,
++        DME,
++        ZIA,
++        Last_
+     };
+ 
+     const vector<MoscowAirport> airports = {
+-      MoscowAirport::SVO,
+-      MoscowAirport::VKO,
+-      MoscowAirport::ZIA,
+-      MoscowAirport::SVO,
++        MoscowAirport::SVO,
++        MoscowAirport::VKO,
++        MoscowAirport::ZIA,
++        MoscowAirport::SVO,
+     };
+ 
+-//    for (auto i : airports) {
+-//        cout << "data: " << PrintEnum(static_cast<size_t>(i)) << endl;
+-//    }
+-//    cout << endl;
++ /*   for (auto i : airports) {
++        cout << "data: " << PrintEnum(static_cast<size_t>(i)) << endl;
++    }
++    cout << endl;*/
+ 
+     AirportCounter<MoscowAirport> airport_counter(begin(airports), end(airports));
+ 
+@@ -158,13 +140,20 @@
+ 
+     using Item = AirportCounter<MoscowAirport>::Item;
+     vector<Item> items;
+-    for (const auto& item : airport_counter.GetItems()) {
++    for (const auto &item : airport_counter.GetItems()) {
+         items.push_back(item);
+     }
+ 
++
++    /*for (auto i = 0; i < items.size(); ++i) {
++        cout << "item: " << PrintEnum(static_cast<size_t>(items[i].first)) << " - " << static_cast<size_t>(items[i].second) << endl;
++    }
++    cout << "\n";*/
++
++
+     ASSERT_EQUAL(items.size(), 4);
+ 
+-    #define ASSERT_EQUAL_ITEM(idx, expected_enum, expected_count) \
++#define ASSERT_EQUAL_ITEM(idx, expected_enum, expected_count) \
+     do { \
+         ASSERT_EQUAL(static_cast<size_t>(items[idx].first), static_cast<size_t>(MoscowAirport::expected_enum)); \
+         ASSERT_EQUAL(items[idx].second, expected_count); \
+@@ -183,9 +172,9 @@
+ 
+     airport_counter.EraseAll(MoscowAirport::VKO);
+     ASSERT_EQUAL(airport_counter.Get(MoscowAirport::VKO), 0);
+-    }
++}
+ 
+-    enum class SmallCountryAirports {
++enum class SmallCountryAirports {
+     Airport_1,
+     Airport_2,
+     Airport_3,
+@@ -204,15 +193,14 @@
+     Last_
+ };
+ 
+-
+-    void TestManyConstructions() {
++void TestManyConstructions() {
+     default_random_engine rnd(20180623);
+     uniform_int_distribution<size_t> gen_airport(
+         0, static_cast<size_t>(SmallCountryAirports::Last_) - 1
+     );
+ 
+     array<SmallCountryAirports, 2> airports;
+-    for (auto& x : airports) {
++    for (auto &x : airports) {
+         x = static_cast<SmallCountryAirports>(gen_airport(rnd));
+     }
+ 
+@@ -222,93 +210,105 @@
+         total += counter.Get(SmallCountryAirports::Airport_1);
+     }
+ 
+-
+-
+-        // Assert to use variable total so that compiler doesn't optimize it out
+-        ASSERT(total < 1000);
+-    }
++    // Assert to use variable total so that compiler doesn't optimize it out
++    ASSERT(total < 1000);
++}
+ 
+-    enum class SmallTownAirports {
+-        Airport_1,
+-        Airport_2,
+-        Last_
+-    };
++enum class SmallTownAirports {
++    Airport_1,
++    Airport_2,
++    Last_
++};
+ 
+-    void TestManyGetItems() {
+-        default_random_engine rnd(20180701);
+-        uniform_int_distribution<size_t> gen_airport(
+-     0, static_cast<size_t>(SmallTownAirports::Last_) - 1
++void TestManyGetItems() {
++    default_random_engine rnd(20180701);
++    uniform_int_distribution<size_t> gen_airport(
++        0, static_cast<size_t>(SmallTownAirports::Last_) - 1
+     );
+ 
+     array<SmallTownAirports, 2> airports;
+-    for (auto& x : airports) {
++    for (auto &x : airports) {
+         x = static_cast<SmallTownAirports>(gen_airport(rnd));
+     }
+ 
++//    for (auto &x : airports) {
++//        cout << PrintEnum(static_cast<size_t>(x)) << " " << endl;
++//    }
++
+     uint64_t total = 0;
+     for (int step = 0; step < 100'000'000; ++step) {
+         AirportCounter<SmallTownAirports> counter(begin(airports), end(airports));
+         total += counter.Get(SmallTownAirports::Airport_1);
+-    for (const auto [airport, count] : counter.GetItems()) {
+-        total += count;
+-    }
++        for (const auto[airport, count] : counter.GetItems()) {
++            total += count;
++        }
+     }
+-        // Assert to use variable total so that compiler doesn't optimize it out
+-        ASSERT(total > 0);
+-    }
++    // Assert to use variable total so that compiler doesn't optimize it out
++    ASSERT(total > 0);
++}
+ 
+-    void TestMostPopularAirport() {
+-        default_random_engine rnd(20180624);
+-        uniform_int_distribution<size_t> gen_airport(
++void TestMostPopularAirport() {
++    default_random_engine rnd(20180624);
++    uniform_int_distribution<size_t> gen_airport(
+         0, static_cast<size_t>(SmallCountryAirports::Last_) - 1
+-        );
++    );
+ 
+-        array<pair<SmallCountryAirports, SmallCountryAirports>, 1000> dayly_flight_report;
+-        for (auto& x : dayly_flight_report) {
+-            x = {
+-                static_cast<SmallCountryAirports>(gen_airport(rnd)),
+-                static_cast<SmallCountryAirports>(gen_airport(rnd))
+-            };
+-        }
++    array<pair<SmallCountryAirports, SmallCountryAirports>, 1000> dayly_flight_report;
++    for (auto &x : dayly_flight_report) {
++        x = {
++            static_cast<SmallCountryAirports>(gen_airport(rnd)),
++            static_cast<SmallCountryAirports>(gen_airport(rnd))
++        };
++    }
+ 
+-        const int days_to_explore = 365 * 500;
++    const int days_to_explore = 365 * 500;
+ 
+-        vector<SmallCountryAirports> most_popular(days_to_explore);
++    vector<SmallCountryAirports> most_popular(days_to_explore);
+ 
+-        for (int day = 0; day < days_to_explore; ++day) {
+-            AirportCounter<SmallCountryAirports> counter;
+-            for (const auto& [source, dest] : dayly_flight_report) {
+-                counter.Insert(source);
+-                counter.Insert(dest);
+-            }
++    for (int day = 0; day < days_to_explore; ++day) {
++        AirportCounter<SmallCountryAirports> counter;
++        for (const auto&[source, dest] : dayly_flight_report) {
++            counter.Insert(source);
++            counter.Insert(dest);
++        }
+ 
+-            const auto items = counter.GetItems();
+-            most_popular[day] = max_element(begin(items), end(items), [](auto lhs, auto rhs) {
+-                return lhs.second < rhs.second;
+-            })->first;
+-        }
++        const auto items = counter.GetItems();
++        most_popular[day] = max_element(begin(items), end(items), [](auto lhs, auto rhs) {
++            return lhs.second < rhs.second;
++        })->first;
++    }
+ 
+-        ASSERT(all_of(begin(most_popular), end(most_popular), [&](SmallCountryAirports a) {
+-            return a == most_popular.front();
+-        }));
+-    }
++    ASSERT(all_of(begin(most_popular), end(most_popular), [&](SmallCountryAirports a) {
++        return a == most_popular.front();
++    }));
++}
+ 
+-    int main() {
+-        TestRunner tr;
+-        // По условию, суммарное время работы всех тестов не должно превышать
+-        // двух секунд. Если ваше время будет лишь чуть больше двух секунд,
+-        // попробуйте отправить ваше решение в тестирующую систему. Возможно,
+-        // там более мощное железо, и ваше решение будет принято.
++int main() {
++    TestRunner tr;
++    // По условию, суммарное время работы всех тестов не должно превышать
++    // двух секунд. Если ваше время будет лишь чуть больше двух секунд,
++    // попробуйте отправить ваше решение в тестирующую систему. Возможно,
++    // там более мощное железо, и ваше решение будет принято.
+ 
+-        // Кроме того, не забудьте включить оптимизации при компиляции кода.
++    // Кроме того, не забудьте включить оптимизации при компиляции кода.
+ 
+-        LOG_DURATION("Total tests duration");
++    LOG_DURATION("Total tests duration");
++    {
++        LOG_DURATION("Test Moscow duration");
+         RUN_TEST(tr, TestMoscow);
++    }
++    {
++        LOG_DURATION("Test Many Constructions");
+         RUN_TEST(tr, TestManyConstructions);
+-//        RUN_TEST(tr, TestManyGetItems);
+-//        RUN_TEST(tr, TestMostPopularAirport);
+-
+-
++    }
++    {
++        LOG_DURATION("Test Many Items");
++        RUN_TEST(tr, TestManyGetItems);
++    }
++    {
++        LOG_DURATION("Test Most Popular Airport");
++        RUN_TEST(tr, TestMostPopularAirport);
++    }
+ 
+-        return 0;
+-    }
++    return 0;
++}
