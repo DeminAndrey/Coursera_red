@@ -1,77 +1,97 @@
 #pragma once
 
-#include <cstdlib>
 #include <algorithm>
+using namespace std;
 
 // Реализуйте шаблон SimpleVector
 template <typename T>
 class SimpleVector {
 public:
-    SimpleVector() :
-        start_(new T[0]),
-        end_(start_),
-        finish_(start_) {}
+    SimpleVector() = default;
 
-    explicit SimpleVector(size_t size) {
-        start_ = new T[size];
-        end_ = start_ + size;
-        finish_ = start_ + size;
+    explicit SimpleVector(size_t size) :
+        data(new T[size]),
+        size(size),
+        capacity(size) {
+    }
+
+    SimpleVector(const SimpleVector& other) :
+        data(new T[other.capacity]),
+        size(other.size),
+        capacity(other.capacity) {
+        copy(other.begin(), other.end(), begin());
+    }
+
+    SimpleVector(SimpleVector&& other) :
+        data(other.data),
+        size(other.size),
+        capacity(other.capacity) {
+        other.data = nullptr;
+        other.size = other.capacity = 0;
+    }
+
+    void operator=(const SimpleVector& other) {
+        auto new_data = new T[other.capacity];
+        copy(other.begin(), other.end(), new_data);
+        delete[] data;
+        data = new_data;
+        size = other.size;
+        capacity = other.capacity;
+    }
+
+    void operator=(SimpleVector&& other) {
+        delete[] data;
+        data = other.data;
+        size = other.size;
+        capacity = other.capacity;
+        other.data = nullptr;
+        other.size = other.capacity = 0;
     }
 
     ~SimpleVector() {
-        delete[] start_;
+        delete[] data;
     }
 
     T& operator[](size_t index) {
-        return start_[index];
+        return data[index];
     }
 
     T* begin() {
-        return start_;
+        return data;
     }
     T* end() {
-        return end_;
+        return data + size;
     }
 
     const T* begin() const {
-        return start_;
+        return data;
     }
 
     const T* end() const {
-        return end_;
+        return data + size;
     }
 
     size_t Size() const {
-        return end_ - start_;
+        return size;
     }
     size_t Capacity() const {
-        return finish_ - start_;
+        return capacity;
     }
     void PushBack(const T& value) {
-        if (Size() == 0) {
-            start_ = new T[1];
-            *start_ = value;
-            end_ = start_ + 1;
-            finish_ = start_ + 1;
-        } else if (Size() != 0 && Size() == Capacity()) {
-            size_t new_capacity = 2 * Capacity();
-            size_t new_size = Size() + 1;
-            T* new_start_ = new T[new_capacity];
-            std::copy(begin(), end(), new_start_);
-            delete[] start_;
-            start_ = new_start_;
-            finish_ = start_ + new_capacity;
-            start_[new_size - 1] = value;
-            end_ = start_ + new_size;
-        } else {
-            start_[Size()] = value;
-            end_ = start_ + Size() + 1;
+        if (size >= capacity) {
+            auto new_cap = capacity == 0 ? 1 : 2 * capacity;
+            auto new_data = new T[new_cap];
+            copy(begin(), end(), new_data);
+            delete[] data;
+            data = new_data;
+            capacity = new_cap;
         }
+        data[size++] = value;
     }
 
 private:
-    T* start_;
-    T* end_;
-    T* finish_;
+    T* data = nullptr;
+    size_t size = 0;
+    size_t capacity = 0;
 };
 
