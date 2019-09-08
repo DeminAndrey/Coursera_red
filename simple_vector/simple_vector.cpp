@@ -61,7 +61,6 @@ int main() {
 //    SimpleVector<int> target = source;
 //
 //    cout << source[0] << " " << target[0] << endl;
-
     SimpleVector<int> source(1);
     SimpleVector<int> target(1);
     target = move(source);
