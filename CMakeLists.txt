@@ -8,4 +8,4 @@ set(CMAKE_CXX_COMPILER /usr/bin/g++)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")
 
-add_executable(Red_belt simple_vector_2/simple_vector_2.cpp)
+add_executable(Red_belt merge_sort/merge_sort_3.cpp)
