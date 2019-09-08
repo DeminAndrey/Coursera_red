@@ -39,31 +39,38 @@ void TestPushBack() {
 class Logger {
 public:
     Logger() { cout << "Default ctor\n"; }
-    Logger(const Logger&) { cout << "Copy ctor\n"; }
+//    Logger(const Logger&) { cout << "Copy ctor\n"; }
+    Logger(const Logger&) = delete;
+    Logger(Logger&&) { cout << "Move ctor\n"; }
+
     void operator=(const Logger&) { cout << "Coppy assignment\n"; }
 };
+
+Logger MakeLogger() {
+    // copy elision
+    return Logger();
+}
 
 
 int main() {
 //    TestRunner tr;
 //    RUN_TEST(tr, TestConstruction);
 //    RUN_TEST(tr, TestPushBack);
-//    Logger source;
-//    Logger target = source;
-//
-//    vector<Logger> loggers;
-//    loggers.push_back(target);
-//
-//    source = target;
+
+    // copy elision
+    Logger logger = MakeLogger();
+
+//    Logger other_logger;
+//    Logger logger = move(other_logger);
 
 //    SimpleVector<int> source(1);
 //    source[0] = 8;
 //    SimpleVector<int> target = source;
 //
 //    cout << source[0] << " " << target[0] << endl;
-    SimpleVector<int> source(1);
-    SimpleVector<int> target(1);
-    target = move(source);
-    cout << source.Size() << " " << target.Size() << endl;
+//    SimpleVector<int> source(1);
+//    SimpleVector<int> target(1);
+//    target = move(source);
+//    cout << source.Size() << " " << target.Size() << endl;
     return 0;
 }
