@@ -36,11 +36,16 @@ vector<Sentence<Token>> SplitIntoSentences(vector<Token> tokens) {
     const auto tokens_end = end(tokens);
     while (tokens_begin != tokens_end) {
         const auto sentence_end = FindSentenceEnd(tokens_begin, tokens_end);
-        Sentence<Token> sentence;
+        /*Sentence<Token> sentence;
         for (; tokens_begin != sentence_end; ++tokens_begin) {
             sentence.push_back(move(*tokens_begin));
         }
-        sentences.push_back(move(sentence));
+        sentences.push_back(move(sentence));*/
+        sentences.push_back(Sentence<Token>(
+            make_move_iterator(tokens_begin),
+            make_move_iterator(sentence_end)
+            ));
+        tokens_begin = sentence_end;
     }
     return sentences;
 }
