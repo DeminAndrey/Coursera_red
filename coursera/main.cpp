@@ -30,34 +30,11 @@ public:
         idx++;
         set<pair<int, Id>> e;
         e.insert({0, index});
-        
-        
         priority.insert(make_move_iterator(e.begin()), make_move_iterator(e.end()));
-        //        set<pair<int, Id>> *p = new set<pair<int, Id>>;
-        
         auto *ptr = new pair<int, Id>;
         *ptr = make_pair(0, index);
         data.push_back({ move(object), ptr });
-        
-        //        p = data.back();
-        
-        
-        
-        //        priority.insert(make_move_iterator(e.begin()), make_move_iterator(e.end()));
-        
-        
-        //        e.clear();
         valid[index] = true;
-        
-        //        for (auto i : priority) {
-        //            cout << i.first << " " << i.second << endl;
-        //        }
-        //        cout << "set size: " << priority.size() << endl;
-        
-        //        for (auto& j : data) {
-        //            cout << j.first << " " << endl;
-        //        }
-        
         return index;
     }
     
@@ -89,21 +66,11 @@ public:
     
     // Увеличить приоритет объекта на 1
     void Promote(Id id) {
-        cout << id << endl;
         auto *ptr = data[id].second;
-        
-        cout << ptr->first << " " << ptr->second << endl;
-        
-        cout << "priority size " << priority.size() << endl;
-        
         auto extra = priority.extract(*ptr);
-        
-        
-        cout << "priority size after move " << priority.size() << endl;
-        
         priority.insert({extra.value().first + 1, extra.value().second});
-        
-        
+		data[id].second->first++;
+		
     }
     
     // Получить объект с максимальным приоритетом и его приоритет
@@ -115,12 +82,10 @@ public:
     pair<T, int> PopMax() {
         auto priority_rate = prev(priority.end());
         Id max_id = prev(priority.end())->second;
-//        auto it = prev(priority.end());
         priority.erase(priority_rate);
-        //        delete[] data[max_id].second;
         data[max_id].second = nullptr;
         valid[max_id] = false;
-        return { move(data[max_id].first), priority_rate->second };
+        return { move(data[max_id].first), priority_rate->first };
     }
     
 private:
@@ -145,38 +110,39 @@ public:
 
 void TestNoCopy() {
     PriorityCollection<StringNonCopyable> strings;
-    /*{
-     LOG_DURATION("Add")
-     for (int i = 0; i < 10000; ++i) {
-     const auto white_id = strings.Add("blue");
-     }
-     }*/
-    
+    {
+		 LOG_DURATION("Add")
+		 for (int i = 0; i < 10000; ++i) {
+			const auto blue_id = strings.Add("blue");
+		 }
+	}
+		
+	
     const auto white_id = strings.Add("white");
     const auto yellow_id = strings.Add("yellow");
     const auto red_id = strings.Add("red");
-    
+	
     strings.Promote(yellow_id);
         for (int i = 0; i < 2; ++i) {
             strings.Promote(red_id);
         }
     strings.Promote(yellow_id);
-//        {
-//            const auto item = strings.PopMax();
-//            ASSERT_EQUAL(item.first, "red");
-//            ASSERT_EQUAL(item.second, 2);
-//        }
-//        {
-//
-//            const auto item = strings.PopMax();
-//            ASSERT_EQUAL(item.first, "yellow");
-//            ASSERT_EQUAL(item.second, 2);
-//        }
-//        {
-//            const auto item = strings.PopMax();
-//            ASSERT_EQUAL(item.first, "white");
-//            ASSERT_EQUAL(item.second, 0);
-//        }
+        {
+            const auto item = strings.PopMax();
+            ASSERT_EQUAL(item.first, "red");
+            ASSERT_EQUAL(item.second, 2);
+        }
+        {
+
+            const auto item = strings.PopMax();
+            ASSERT_EQUAL(item.first, "yellow");
+            ASSERT_EQUAL(item.second, 2);
+        }
+        {
+            const auto item = strings.PopMax();
+            ASSERT_EQUAL(item.first, "white");
+            ASSERT_EQUAL(item.second, 0);
+        }
 }
 
 int main() {
