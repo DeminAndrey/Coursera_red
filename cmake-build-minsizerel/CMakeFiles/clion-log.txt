@@ -1,6 +1,0 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_C_COMPILER=/opt/local/bin/gcc-mp-5 -DCMAKE_CXX_COMPILER=/opt/local/bin/c++-mp-5 -D CMAKE_CXX_FLAGS = -stdlib=libstdc++ -G "CodeBlocks - Unix Makefiles" /Users/bulakhigor/CLionProjects/Red
-Parse error in command line argument: -D
-Should be: VAR:type=value
-CMake Error: No cmake script provided.
-CMake Error: Problem processing arguments. Aborting.
-

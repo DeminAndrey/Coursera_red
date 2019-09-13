@@ -1,4 +1,0 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE= -DCMAKE_C_COMPILER=/opt/local/bin/gcc-mp-5 -DCMAKE_CXX_COMPILER=/opt/local/bin/c++-mp-5 -G "CodeBlocks - Unix Makefiles" /Users/bulakhigor/CLionProjects/Red
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/bulakhigor/CLionProjects/Red/cmake-build-default
