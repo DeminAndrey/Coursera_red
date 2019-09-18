@@ -10,7 +10,7 @@ using namespace std;
 
 
 template<typename C>
-struct Subrage {
+struct Subrange {
     C &collection;
     size_t first_index, last_index;
 
@@ -35,8 +35,8 @@ private:
 
 public:
     Paginator(Container &c, size_t page_size) {
-        for (size_t i = 0; i < c.size(); ++i) {
-            pages.push_back({c, i, min(i + page_size, c.size)})
+        for (size_t i = 0; i < c.size(); i += page_size) {
+            pages.push_back({c, i, min(i + page_size, c.size())});
         }
     }
 
@@ -45,13 +45,11 @@ public:
     }
 
     auto end() const {
-        retrun
-        pages.end();
+        return pages.end();
     }
 
     size_t size() const {
-        terurn
-        pages.size();
+        return pages.size();
     }
 };
 
@@ -61,8 +59,11 @@ Paginator<C> Paginate(C& c, size_t page_size) {
 }
 
 template<typename ContainerOfVectors>
-void GenerateSingleThread(ContainerOfVectors &result,
-                          size_t first_row, size_t column_size) {
+void GenerateSingleThread(
+    ContainerOfVectors &result,
+    size_t first_row,
+    size_t column_size
+) {
     for (auto &row : result) {
         row.reserve(column_size);
         for (size_t column = 0; column < column_size; ++column) {
@@ -90,16 +91,22 @@ vector<vector<int>> GenerateMultiThread(size_t size, size_t page_size) {
             async([page, first_row, size] {
                 GenerateSingleThread(page, first_row, size);
             })
-            );
-            first_row += page_size;
+        );
+        first_row += page_size;
     }
     return result;
 }
 
 
 template <typename ContainerOfVectors>
-int64_t SumSingltTheat(const ContainerOfVectors& matrix) {
+int64_t SumSingleThread(const ContainerOfVectors& matrix) {
     int64_t sum = 0;
+    for (const auto& row : matrix) {
+        for (auto item : row) {
+            sum += item;
+        }
+    }
+    return sum;
 }
 
 
