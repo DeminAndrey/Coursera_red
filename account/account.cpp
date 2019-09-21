@@ -15,17 +15,17 @@ struct Account {
     mutex m;
 
     bool Spend(int value) {
-//        lock_guard<mutex> (return false;);
+        lock_guard<mutex> g(m);
         if (value <= balance) {
             balance -= value;
-            history.push_back(value)
-;            return true;
+            history.push_back(value);
+            return true;
         }
         return false;
     }
 };
 
-int SpendMoney(Account& account) {
+int SpendMoney(Account &account) {
     int total_spend = 0;
     for (int i = 0; i < 100000; ++i) {
         if (account.Spend(1)) {
