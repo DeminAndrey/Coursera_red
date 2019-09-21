@@ -14,4 +14,4 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")
 #set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -gdwarf-3")
 
 
-add_executable(Red_belt final_red/main.cpp)
+add_executable(Red_belt final_red/main.cpp final_red/parse.cpp final_red/search_server.cpp)
