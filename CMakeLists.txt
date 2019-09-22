@@ -19,3 +19,6 @@ set(PYHON_FILES Solver.py Checker.py)
 
 add_executable(Red_belt ${SOURCE_FILES} ${PYTHON_FILES})
 target_link_libraries(Red_belt ${PYTHON_LIBRARIES})
+
+include_directories(google_tests)
+add_subdirectory(google_tests)
