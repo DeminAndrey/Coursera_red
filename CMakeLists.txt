@@ -13,5 +13,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-3")
 #set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -gdwarf-3")
 
+set(SOURCE_FILES final_red/main.cpp final_red/parse.cpp final_red/search_server.cpp)
+set(PYHON_FILES Solver.py Checker.py)
 
-add_executable(Red_belt final_red/main.cpp final_red/parse.cpp final_red/search_server.cpp)
+
+add_executable(Red_belt ${SOURCE_FILES} ${PYTHON_FILES})
+target_link_libraries(Red_belt ${PYTHON_LIBRARIES})
