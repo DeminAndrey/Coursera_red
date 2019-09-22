@@ -65,4 +65,3 @@ deploy:
 
   on:
     appveyor_repo_tag: true
-  https://www.pvsm.ru/programmirovanie/256086
