@@ -20,3 +20,7 @@ string Join(char c, const Container& cont) {
 string_view Strip(string_view s);
 vector<string_view> SplitBy(string_view s, char sep);
 
+void LeftStrip(string_view& sv);
+string_view ReadToken(string_view& sv);
+
+vector<string_view> SplitIntoWordsView(string_view str);
